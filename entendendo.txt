@@ -1,0 +1,59 @@
+1 - iniciar com ele parado e pontuação zerada
+2 - o jogo começa apertando a tecla para cima, a pontuação deve ser incrementada. Um ponto a cada 30 frames
+3 - trocar de cenário a cada 60 segundos, virando noite.
+4 - A velocidade aumenta a cada 1000 frames.
+5 - obstáculos:cactos de dois tamanhos e pterossauros. De forma aleatória e não muito próximos. Aumentar dificuldade com o tempo.
+6 - o TRex deve ser capaz de desviar dos obstáculos
+7 - A velocidade das núvens é a metade da do TRex
+8 - O jogo pode ser pausado em p
+9 - O jogo termina quando colidir com um obstáculo.
+
+
+Fazer:
+1 - ele já corre e pula, o deserto já caminha, ele inicia correndo.
+Verificar: como ele corre, como passa as nuvens e o deserto.
+
+- Ele cria o objeto - dinossauro, seta as informações de classe e nome e seta o ponto inícial dele.
+- Pra fazer ele correr, ele verifica o status do dino. Se o status for 0 ele alterna entre as duas imagensde corrida.
+- O professor adiciona as nuvens num vetor e move cada uma delas separadamente (depois tu tem que esvaziar esse vetor pra não ficar muito pesado)
+- Podemos tentar fazer a mesma coisa para os cactos,  3 formas e dois tamanhos, marcamos 6 jeitos de fazer. Totalmente aleatório. 
+    1 grande sozinho
+    2 grandes juntos
+    1 pequeno sozinho
+    2 pequenos juntos
+    3 pequenos juntos
+    1grande1médio1pequeno1grando
+
+
+    DinoVoador:
+    na altura do chão, na altura do Dino e mais baixo que ele
+
+Como fazer o obstáculo? - okay
+já entendemos como colocar um obstáculo, precisa pegar a localização dele e setar direto no codigo, com o auxilio do gimp
+a altura e largura e a distância dos inicios.
+primeiro vamos tentar um cacto simples. já
+- Setar informações dele, pegar o tamanho dele. escolher uma probabilidade pra ele ir aparecendo ou um tempo.
+já só falta setar um tempo de dois ou três segundos para calcular novamente no mínimo.
+
+Esquema de obstáculos de cacto:
+
+primeiro setar os tipos de cactos,
+em ordem pela imagem:
+1 pequeno sozinho
+2 pequenos juntos
+3 pequenos juntos
+
+1 grande sozinho
+2 grandes juntos
+4 juntos
+
+fazer um random pra escolher que tipo de cacto ele vai setar - okay
+
+depois só chamar o mover pra ele - okay
+
+- Ativar o controle para baixo.
+
+- Colocar os DinoVoador
+três modos: em cima, embaixo e na altura dele
+
+- Como colocar música

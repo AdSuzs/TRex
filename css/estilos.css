@@ -30,3 +30,10 @@
     position: absolute;
     z-index: 1;
 }
+
+.cacto{
+    background-image: url(sprites.png);
+    background-position-y: 2px;
+    position: absolute;
+    z-index: 3;
+}
