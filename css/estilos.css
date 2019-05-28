@@ -37,3 +37,12 @@
     position: absolute;
     z-index: 3;
 }
+
+.dPassaro{
+    width: 48px;
+    height: 36px;
+    background-image: url(sprites.png);
+    background-position-y: 2px;
+    position: absolute;
+    z-index: 3;
+}

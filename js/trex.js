@@ -5,6 +5,7 @@
     const PROB_CACTO = 5;
     var gameLoop;
     var deserto;
+    var dPassaro;
     var dino;
     var nuvens = [];
     var cactos = [];
@@ -18,6 +19,10 @@
     window.addEventListener("keydown", function (e) {
         if(e.key == "ArrowUp" && dino.status==0) dino.status = 1;
         if(e.key == 'p') clearInterval(gameLoop);
+        if(e.key == "ArrowDown")dino.status = 3;
+    });
+    window.addEventListener("keyup", function (e) {
+        if(e.key == "ArrowDown") dino.status = 0;
     });
 
     function Deserto(){
@@ -39,7 +44,9 @@
         this.sprites = {
             'correr1':'-766px',
             'correr2':'-810px',
-            'pulando':'-678px'
+            'pulando':'-678px',
+            'agacha1': '-941px',
+            'agacha2': '-1000px'
         };
         this.status = 0; // 0:correndo; 1:subindo; 2: descendo; 3: agachado
         this.alturaMaxima = "87px";
@@ -53,6 +60,7 @@
     
     Dino.prototype.correr = function () {
         if(this.status == 0){
+            this.element.style.width = '45px';
             this.element.style.backgroundPositionX = (this.element.style.backgroundPositionX == this.sprites.correr1)?this.sprites.correr2:this.sprites.correr1;
         }
         else if (this.status == 1) {
@@ -63,6 +71,10 @@
         else if (this.status == 2) {
             this.element.style.bottom = (parseInt(this.element.style.bottom) - 1) + "px";
             if (this.element.style.bottom == "0px") this.status = 0;
+        }
+        else if(this.status == 3){
+            this.element.style.width = '60px';
+            this.element.style.backgroundPositionX = (this.element.style.backgroundPositionX == this.sprites.agacha1)?this.sprites.agacha2:this.sprites.agacha1;
         }
     }
 
@@ -75,6 +87,36 @@
     }
 
     Nuvem.prototype.mover = function(){
+        this.element.style.right = (parseInt(this.element.style.right) + 1) + "px";
+    }
+
+    function DPassaro(){
+        this.sprites = {
+            'voa1' : "-134px",
+            'voa2' : "-180px",
+        }
+        this.element = document.createElement("div");
+        this.element.className = "dPassaro";
+        this.element.style.right = "0px";
+        var a = Math.floor(Math.random() * (3 - 1 + 1) + 1);
+        switch(a){
+            case 1:
+                this.element.style.top = "90px";
+                break;
+
+            case 2:
+                this.element.style.top = "45px";
+                break;
+            
+            case 3:
+                this.element.style.top = "10px";
+                break;
+        }        
+        deserto.element.appendChild(this.element);
+    }
+
+    DPassaro.prototype.voar = function(){
+        this.element.style.backgroundPositionX = (this.element.style.backgroundPositionX == this.sprites.voa1)?this.sprites.voa2:this.sprites.voa1;
         this.element.style.right = (parseInt(this.element.style.right) + 1) + "px";
     }
 
@@ -95,8 +137,8 @@
         var a = Math.floor(Math.random() * (6 - 1 + 1) + 1); 
         switch(a){    
             case 1: 
+                this.element.style.width = "25px";
                 this.element.style.height = "49px";
-                this.element.style.width = "23px";
                 this.element.style.backgroundPositionX = this.sprites.grd_um;
                 break;
             case 2: 
@@ -140,14 +182,20 @@
             nuvens.push(new Nuvem());
         }
         if (Math.floor(Math.random()*10000) <= PROB_CACTO) {
-            cactos.push(new Cacto());
+            // var a = Math.floor(Math.random() * (2 - 1 + 1) + 1);
+            // if(a == 1){
+            //     cactos.push(new Cacto());
+            // }
+            // else{
+                dPassaro.voar();
+            //}
         }
         nuvens.forEach(function (n) {
             n.mover();
         })
-        cactos.forEach(function (c) {
-            c.mover();
-        });
+        // cactos.forEach(function (c) {
+        //     c.mover();
+        // });
         //Em caso de game over
         //clearInterval(gameLoop);
     }
