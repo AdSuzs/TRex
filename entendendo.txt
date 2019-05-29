@@ -51,9 +51,15 @@ fazer um random pra escolher que tipo de cacto ele vai setar - okay
 
 depois só chamar o mover pra ele - okay
 
-- Ativar o controle para baixo.
+- Ativar o controle para baixo. -okay
 
-- Colocar os DinoVoador
+- Colocar os DinoVoador -okay
 três modos: em cima, embaixo e na altura dele
 
-- Como colocar música
+- Como colocar música -okay
+
+- Ativar dino morto pelo cacto.
+se alguma dimensão do dino for igual a uma das dimensões do obstáculo
+a ideia é que quando a posição do obstáculo for igual a do dino, ele pare.
+porém, coloca numa função? dentro do dino ou do obstáculo?
+- Colocar a pontuação.

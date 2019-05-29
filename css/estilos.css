@@ -19,7 +19,7 @@
     background-image: url(sprites.png);
     background-position-y: -3px;
     position: absolute;
-    z-index: 2;
+    z-index: 3;
 }
 
 .nuvem {
@@ -35,7 +35,7 @@
     background-image: url(sprites.png);
     background-position-y: 2px;
     position: absolute;
-    z-index: 3;
+    z-index: 2;
 }
 
 .dPassaro{
@@ -44,5 +44,5 @@
     background-image: url(sprites.png);
     background-position-y: 2px;
     position: absolute;
-    z-index: 3;
+    z-index: 2;
 }
