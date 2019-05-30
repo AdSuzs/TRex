@@ -58,8 +58,10 @@ três modos: em cima, embaixo e na altura dele
 
 - Como colocar música -okay
 
-- Ativar dino morto pelo cacto.
+- Ativar dino morto pelo cacto. - okay
 se alguma dimensão do dino for igual a uma das dimensões do obstáculo
 a ideia é que quando a posição do obstáculo for igual a do dino, ele pare.
 porém, coloca numa função? dentro do dino ou do obstáculo?
+
+- Excluir nuvens e obstáculos;
 - Colocar a pontuação.

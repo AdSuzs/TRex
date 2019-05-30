@@ -2,7 +2,7 @@
 
     const FPS = 300;
     const PROB_NUVEM = 4;
-    const PROB_CACTO = 5;
+    const PROB_CACTO = 3;
     var gameLoop;
     var deserto;
        var dino;
@@ -16,9 +16,10 @@
     }
 
     window.addEventListener("keydown", function (e) {
-        if(e.key == "ArrowUp" && dino.status==0) dino.status = 1;
-        if(e.key == 'p') clearInterval(gameLoop);
-        if(e.key == "ArrowDown")dino.status = 3;
+        if(e.key == "ArrowUp" && dino.status==0 || dino.status==5) dino.status = 1;
+        if(e.key == 'f') clearInterval(gameLoop);
+        if(e.key == 'p') dino.status = 5;
+        if(e.key == "ArrowDown" && dino.status==0 || dino.status==5)dino.status = 3;
     });
     window.addEventListener("keyup", function (e) {
         if(e.key == "ArrowDown") dino.status = 0;
@@ -41,6 +42,7 @@
 
     function Dino(){
         this.sprites = {
+            'parado' : '-40px',
             'correr1':'-766px',
             'correr2':'-810px',
             'pulando':'-678px',
@@ -48,11 +50,11 @@
             'agacha2': '-1000px',
             'dead' : '-852px'
         };
-        this.status = 0; // 0:correndo; 1:subindo; 2: descendo; 3: agachado; 4: morto
+        this.status = 5; // 0:correndo; 1:subindo; 2: descendo; 3: agachado; 4: morto; 5: parado 
         this.alturaMaxima = "87px";
         this.element = document.createElement("div");
         this.element.className = "dino";
-        this.element.style.backgroundPositionX = this.sprites.correr1;
+        this.element.style.backgroundPositionX = this.sprites.parado;
         this.element.style.bottom = "0px";
         this.element.style.right = "420px";
         deserto.element.appendChild(this.element);
@@ -61,6 +63,8 @@
     Dino.prototype.correr = function () {
         if(this.status == 0){
             this.element.style.width = '45px';
+            this.element.style.height = '45px';
+            this.element.style.backgroundPositionY = '-3px';
             this.element.style.backgroundPositionX = (this.element.style.backgroundPositionX == this.sprites.correr1)?this.sprites.correr2:this.sprites.correr1;
         }
         else if (this.status == 1) {
@@ -74,11 +78,16 @@
         }
         else if(this.status == 3){
             this.element.style.width = '60px';
+            this.element.style.height = '30px';
+            this.element.style.backgroundPositionY = '-20px';
             this.element.style.backgroundPositionX = (this.element.style.backgroundPositionX == this.sprites.agacha1)?this.sprites.agacha2:this.sprites.agacha1;
         }
         else if(this.status == 4){
             this.element.style.backgroundPositionX = this.sprites.dead;
             clearInterval(gameLoop);
+        }
+        else if(this.status == 5){
+            this.element.style.backgroundPositionX = this.sprites.parado;
         }
     }
 
@@ -105,19 +114,19 @@
         this.element.style.backgroundPositionX = this.sprites.voa1;
         var a = Math.floor(Math.random() * (3 - 1 + 1) + 1);
         
-        // switch(a){
-        //     case 1:
+        switch(a){
+            case 1:
                 this.element.style.bottom = "15px";
-        //         break;
+                break;
 
-        //     case 2:
-        //         this.element.style.bottom = "50px";
-        //         break;
+            case 2:
+                this.element.style.bottom = "50px";
+                break;
             
-        //     case 3:
-        //         this.element.style.bottom = "37px";
-        //         break;
-        // }        
+            case 3:
+                this.element.style.bottom = "38px";
+                break;
+        }        
         deserto.element.appendChild(this.element);
     }
 
@@ -183,52 +192,58 @@
 
     
     function run () {
-        dino.correr();
-        deserto.mover();
-
-        if (Math.floor(Math.random()*1000) <= PROB_NUVEM) {
-            nuvens.push(new Nuvem());
+        // dino.correr();
+        if(dino.status != 5){
+            dino.correr();
+            deserto.mover();
+    
+            if (Math.floor(Math.random()*1000) <= PROB_NUVEM) {
+                nuvens.push(new Nuvem());
+            }
+            //Coloca um obstáculo aleatoriamente
+            if (Math.floor(Math.random()*1000) <= PROB_CACTO) {
+                //  var a = Math.floor(Math.random() * (2 - 1 + 1) + 1);
+                //  if(a == 1){
+                    // obstaculo.push(new Cacto());
+                // }
+                // if(a == 2){
+                    obstaculo.push(new DPassaro());
+                // }
+             }    
+             //Adiciona as núvens
+             nuvens.forEach(function (n) {
+                 n.mover();
+             });
+    
+            console.log("dino pos bottom "+dino.element.style.bottom);
+            console.log("dino pos right "+dino.element.style.right);
+            obstaculo.forEach(function (c) {
+                c.mover();
+                var ob_posBott = parseInt(c.element.style.bottom);
+                var ob_posRight = parseInt(c.element.style.right);
+                var ob_tam = parseInt(c.element.style.width) - 5;
+                var di_posBott = parseInt(dino.element.style.bottom);
+                var di_posRight = parseInt(dino.element.style.right);
+    
+                if((ob_posRight + ob_tam > di_posRight && ob_posRight - ob_tam <= di_posRight) && ob_posBott == di_posBott){
+                    dino.status = 4;
+                }
+                else if((ob_posBott == 15 && di_posBott == 0) && (ob_posRight > di_posRight - 45 && ob_posRight <= di_posRight + 45)){
+                    dino.status = 4;
+                }
+                else if((ob_posBott == 50 && ob_posBott <= di_posBott + 40) && (ob_posRight > di_posRight - 45 && ob_posRight <= di_posRight + 45)){
+                    dino.status = 4;
+                }
+                else if((ob_posBott == 38 && di_posBott == 0) && dino.status == 0){
+                    if(ob_posRight > di_posRight - 30 && ob_posRight <= di_posRight + 35){
+                        dino.status = 4;
+                    }
+                }
+            });
+                  
+            //Em caso de game over
+            //clearInterval(gameLoop);
         }
-        //Coloca um obstáculo aleatoriamente
-        if (Math.floor(Math.random()*10000) <= PROB_CACTO) {
-            //  var a = Math.floor(Math.random() * (2 - 1 + 1) + 1);
-            //  if(a == 1){
-            //     obstaculo.push(new Cacto());
-            // }
-            // if(a == 2){
-                obstaculo.push(new DPassaro());
-            // }
-         }
-
-         //Adiciona as núvens
-         nuvens.forEach(function (n) {
-             n.mover();
-         });
-
-        console.log("dino pos bottom "+dino.element.style.bottom);
-        console.log("dino pos right "+dino.element.style.right);
-        obstaculo.forEach(function (c) {
-            c.mover();
-            var ob_posBott = c.element.style.bottom;
-            var ob_posRight = c.element.style.right;
-            var di_posBott = dino.element.style.bottom;
-            var di_posRight = dino.element.style.right;
-
-            if(ob_posRight == di_posRight && ob_posBott == di_posBott){
-                dino.status = 4;
-                console.log("obstáculo pos bottom "+c.element.style.bottom);
-                console.log("obstáculo pos right "+c.element.style.right);
-                console.log("dino pos bottom "+dino.element.style.bottom);
-                console.log("dino pos right "+dino.element.style.right);
-            }
-            else if(ob_posBott == 15+"px" && di_posBott == 0+"px" & ob_posRight == di_posRight){
-                dino.status = 4;
-            }
-        });
-        
-        
-        //Em caso de game over
-        //clearInterval(gameLoop);
     }
 
     init();
